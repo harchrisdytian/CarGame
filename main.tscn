@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://dv81qwdg5gm6m"]
+
+[ext_resource type="Script" uid="uid://bakcq4ewg8pdo" path="res://Scripts/Level.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://h0q5dagqnxh" path="res://guy.tscn" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://do6hr3gkx0cg" path="res://Assets/bank.png" id="2_0xm2m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
+size = Vector2(369, 862)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_h2yge")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-946, -462)
+
+[node name="Bank" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("2_0xm2m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-36.5, 4)
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="HUD" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="VBoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Host" type="Button" parent="HUD/Panel"]
+layout_mode = 2
+text = "Host"
+
+[node name="Join" type="Button" parent="HUD/Panel"]
+layout_mode = 2
+text = "Join
+"
+
+[node name="Players" type="Node" parent="."]
+
+[node name="Guy" parent="Players" instance=ExtResource("1_ig7tw")]
+position = Vector2(-184, -122)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://h0q5dagqnxh")
+spawn_path = NodePath("../Players")
+spawn_limit = 6
+
+[connection signal="pressed" from="HUD/Panel/Host" to="." method="_on_host"]
+[connection signal="pressed" from="HUD/Panel/Join" to="." method="_on_join"]
